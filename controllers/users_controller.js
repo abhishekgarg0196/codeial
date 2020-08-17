@@ -10,6 +10,9 @@ module.exports.profile = function(req, res){
 
 // render the sign up page
 module.exports.signUp = function(req, res){
+    if(req.isAuthenticated()){
+        return res.render("/user/profile");
+    }
     return res.render('user_sign_up', {
         title: "Codeial | Sign Up"
     })
@@ -18,6 +21,9 @@ module.exports.signUp = function(req, res){
 
 // render the sign in page
 module.exports.signIn = function(req, res){
+    if(req.isAuthenticated()){
+        return res.render("/user/profile");
+    }
     return res.render('user_sign_in', {
         title: "Codeial | Sign In"
     })
@@ -48,5 +54,13 @@ module.exports.create = function(req, res){
 
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
+    return res.redirect('/');
+}
+
+module.exports.destroySession = function(req, res){
+    //This function is given to req by passport
+    req.logout();
+
+    // before redirect to home page we need to log out 
     return res.redirect('/');
 }

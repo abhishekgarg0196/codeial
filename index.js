@@ -9,6 +9,7 @@ const session = require('express-session');
 const passport = require('passport');
 //This is just to initialze and notify express app that we are using passport middleware here
 const passportLocal = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongo')(session);
 
 app.use(express.urlencoded());
 
@@ -26,6 +27,7 @@ app.set('layout extractScripts', true);
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
+//Mongo store is used to store the session cokkies in the db
 // This is to tell what kind of cookies are being configured .. this will be used by passport for serialize and deserialize the user
 app.use(session({
     name: 'codeial',
@@ -35,7 +37,16 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000 * 60 * 100)
-    }
+    },
+    store : new MongoStore(
+        {
+        mongooseConnection: db,
+        autoRemove:'disabled'
+        },
+        function(err){
+            console.log(err || 'connect mongo setup ok');
+        }
+    )
 }));
 
 // this will call de-serialize in passport based on presence of cookies or not 
