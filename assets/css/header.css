@@ -1,0 +1,17 @@
+#main-header {
+  display: flex;
+  background-color: #2B60DE;
+  height: 75px; }
+  #main-header #Codeial-header {
+    font: 100% Helvetica, sans-serif;
+    color: white;
+    margin-left: 15px; }
+  #main-header #link-header {
+    margin-left: 70%; }
+    #main-header #link-header ul li {
+      display: inline-flex;
+      flex-direction: row-reverse; }
+      #main-header #link-header ul li a {
+        font: 100% Helvetica, sans-serif;
+        color: white;
+        padding: 10px; }

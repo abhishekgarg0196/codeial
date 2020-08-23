@@ -10,6 +10,19 @@ const passport = require('passport');
 //This is just to initialze and notify express app that we are using passport middleware here
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo')(session);
+const sassMiddleware = require('node-sass-middleware');
+
+// The scss should be pre compiled such that css file are availbale on start of application to the layout/template
+//Put this at a positon just above the server starting 
+// and also before browser makes a req to fetch the page
+app.use(sassMiddleware({
+    src: './assets/scss',
+    dest : './assets/css',
+    debug: true,
+    outputStyle: "extended",
+    // Prefix tell the app that by default to look for CSS file in which dir
+    prefix : '/css'  
+}));
 
 app.use(express.urlencoded());
 

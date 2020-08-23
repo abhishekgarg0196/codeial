@@ -10,6 +10,8 @@ const User = require('../models/user');
 
 // authentication using passport
 // Telling passport to use this local strategy
+
+//create a new starategy and allocated to a middleware
 passport.use(new LocalStrategy({
     // By default, LocalStrategy expects to find credentials in parameters named username and password. If your site prefers to name these fields differently, options are available to change the defaults.
     // usernameFiled is key which get's from the form data as as name we pass it such that value is picked from that 
