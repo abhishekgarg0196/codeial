@@ -2,9 +2,29 @@ const User = require('../models/user');
 
 
 module.exports.profile = function(req, res){
-    return res.render('user_profile', {
-        title: 'User Profile'
+
+    User.findById(req.params.id, function(err, user){
+        // we can not use the key user as it's already availbale inlocals
+        return res.render('user_profile', {
+            title: 'User Profile',
+            profile_user : user
+        })
     })
+}
+
+module.exports.update = function(req, res){
+    if(req.user.id == req.params.id) {
+            User.findByIdAndUpdate(req.params.id , {
+                // or req.body 
+                name : req.body.name,
+                email : req.body.email
+            }, function(err, user){
+                    return res.redirect('back');
+            });
+    }else{
+        res.status(401).send('Unauthorized');
+    }
+
 }
 
 
