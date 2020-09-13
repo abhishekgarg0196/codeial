@@ -16,18 +16,21 @@ passport.use(new LocalStrategy({
     // By default, LocalStrategy expects to find credentials in parameters named username and password. If your site prefers to name these fields differently, options are available to change the defaults.
     // usernameFiled is key which get's from the form data as as name we pass it such that value is picked from that 
     // email in callback is just for more descriptive
-        usernameField: 'email'
+        usernameField: 'email',
+        passReqToCallback: true
     },
-    function(email, password, done){
+    function(req,email, password, done){
         // find a user and establish the identity
         User.findOne({email: email}, function(err, user)  {
             if (err){
-                console.log('Error in finding user --> Passport');
+                //console.log('Error in finding user --> Passport');
+                req.flash('error', err);
                 return done(err);
             }
 
             if (!user || user.password != password){
-                console.log('Invalid Username/Password');
+                //console.log('Invalid Username/Password');
+                req.flash('error', 'Invalid username/password');
                 return done(null, false);
             }
 
