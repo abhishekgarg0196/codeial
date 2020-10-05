@@ -79,6 +79,10 @@ module.exports.create = function (req, res) {
 module.exports.createSession = function (req, res) {
   req.flash("success", "logged in successfully");
   // here we are redirecting to the home page and thus app m/w will be called and hence the res.locals.flash will be set accordingly
+  //NOTE:  req.flash() method will put the flash message in the cookie not in the request
+  // res.redirect will not send the same req, res.redirect will just take us to another redirected url
+  //so we dont have to do anything with req here, on the redirected url
+  // it will chck the message in cookie and destroy that message after one time use
   return res.redirect("/");
 };
 
