@@ -1,31 +1,35 @@
-$primary-color: white;
-$font-stack: Helvetica, sans-serif;
+#layout-header{
+    nav{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        background: #2196f3;
+        color: white;
+        box-shadow: 1px 1px 1px 1px lightgrey;
 
-#main-header{
-    display: flex;
-    background-color:#2B60DE;
-    height: 75px;
-    
-    #Codeial-header{
-        font: 100% $font-stack;
-        color: $primary-color;
-        margin-left: 15px;
-    }
+        .mini-logo{
+            p{
+                margin: 5px;
+                font-size: 1.4rem;
+                font-weight: bold;
+            }
+        }
 
-    #link-header{
-
-        margin-left: 70%;
-        ul{
-            li{
-                
-                display:inline-flex;
-                flex-direction: row-reverse;
-                a{
-                    font: 100% $font-stack;
-                    color: $primary-color;
-                    padding: 10px;
+        .auth-links{
+            ul{
+                margin: 5% 5px;
+                display: flex;
+                list-style: none;
+                li{
+                    margin-right: 10px;
                 }
             }
         }
+
+        a{
+            color: white;
+            text-decoration: none;
+        }
+
     }
 }
