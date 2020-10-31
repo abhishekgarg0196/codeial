@@ -1,4 +1,7 @@
 const User = require("../models/user");
+const path = require('path');
+const fs = require('fs');
+
 
 module.exports.profile = function (req, res) {
   User.findById(req.params.id, function (err, user) {
@@ -10,20 +13,44 @@ module.exports.profile = function (req, res) {
   });
 };
 
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
   if (req.user.id == req.params.id) {
-    User.findByIdAndUpdate(
-      req.params.id,
-      {
-        // or req.body
-        name: req.body.name,
-        email: req.body.email,
-      },
-      function (err, user) {
+    try {
+      let user = await User.findById(req.params.id);
+      // Because it's an multipart form, the normal parser will not be able to parse it
+      // so we won't be able to access it directly from req params
+      // Thus to parse the body we are using multer and uploadAvatar middleware function
+      
+      User.uploadedAvatar(req, res , function(err){
+        // the process provides req, multer will parse the req,  Multer adds a body object and a file or files object to the request object
+        // And uploadAvaatr will upload it to the dest folder
+        if(err){console.log("*** Multer Error : ", err)}
+        user.name = req.body.name; // we can only read body of multipart form using multer and not being possible with normal parser
+        user.email = req.body.email;
+        if(req.file){
+          if(user.avatar){
+            let avatarStoragePath = path.join(__dirname , '..' , user.avatar);
+            try {
+                  if (fs.existsSync(avatarStoragePath)) {
+                      fs.unlinkSync(avatarStoragePath);
+                  }
+                } catch(err) {
+                  console.error(err)
+                }
+          }
+          // log req.file to check that multer had processed the request.
+          // this is saving the path of the uploaded file into the avatar field in the user
+          user.avatar = User.avatarPath + "\\" + req.file.filename; // for windows use "\\" and for linux use "/"
+        }
+        user.save();
+        return res.redirect('back');
+      });
+    } catch (error) {
+        req.flash("error", err);
         return res.redirect("back");
-      }
-    );
-  } else {
+    }
+  }else{
+    res.flash('error', 'Unauthorized')
     res.status(401).send("Unauthorized");
   }
 };
