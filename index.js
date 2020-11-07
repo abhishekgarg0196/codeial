@@ -9,6 +9,7 @@ const session = require("express-session");
 const passport = require("passport");
 //This is just to initialze and notify express app that we are using passport middleware here
 const passportLocal = require("./config/passport-local-strategy");
+const passportJWT = require("./config/passport-jwt-strategy");
 const MongoStore = require("connect-mongo")(session);
 const sassMiddleware = require("node-sass-middleware");
 const flash = require("connect-flash");
